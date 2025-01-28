@@ -12,6 +12,7 @@ import dotenv from "dotenv";
 import { redis } from "./redis";
 import { LoginResolver } from "./modules/user/Login";
 import { MeResolver } from "./modules/user/Me";
+import { authChecker } from "./authChecker";
 
 dotenv.config();
 if (!process.env.SESSION_SECRET) {
@@ -24,6 +25,7 @@ const bootstrap = async () => {
   const schema = await buildSchema({
     resolvers: [RegisterResolver, LoginResolver, MeResolver],
     validate: true,
+    authChecker,
   });
 
   const apolloServer = new ApolloServer({
@@ -35,7 +37,7 @@ const bootstrap = async () => {
 
   let redisStore = new RedisStore({
     client: redis,
-  })
+  });
 
   app.use(
     session({
