@@ -1,4 +1,4 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 import bcrypt from "bcryptjs";
 import { User } from "../../entities/User";
 import { MyContext } from "../../types/MyContext";
@@ -16,6 +16,8 @@ export class LoginResolver {
 
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return null;
+
+    if (!user.confirmed) throw new Error("user email is not confirmed");
 
     ctx.req.session.userId = user.id;
 

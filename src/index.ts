@@ -13,6 +13,7 @@ import { redis } from "./redis";
 import { LoginResolver } from "./modules/user/Login";
 import { MeResolver } from "./modules/user/Me";
 import { authChecker } from "./authChecker";
+import { ConfirmUserResolver } from "./modules/user/ConfirmUser";
 
 dotenv.config();
 if (!process.env.SESSION_SECRET) {
@@ -23,7 +24,7 @@ const SESSION_SECRET = process.env.SESSION_SECRET;
 
 const bootstrap = async () => {
   const schema = await buildSchema({
-    resolvers: [RegisterResolver, LoginResolver, MeResolver],
+    resolvers: [RegisterResolver, LoginResolver, MeResolver, ConfirmUserResolver],
     validate: true,
     authChecker,
   });
