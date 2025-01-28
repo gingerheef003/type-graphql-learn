@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
-import { buildSchema, formatArgumentValidationError } from "type-graphql";
+import { buildSchema } from "type-graphql";
 import express from "express";
 import cors from "cors";
 import { AppDataSource } from "../data-source";
@@ -15,7 +15,6 @@ const bootstrap = async () => {
 
   const apolloServer = new ApolloServer({
     schema,
-    formatError: formatArgumentValidationError
   });
   await apolloServer.start();
 
