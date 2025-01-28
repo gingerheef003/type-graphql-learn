@@ -21,7 +21,7 @@ export class User extends BaseEntity {
   email!: string;
 
   @Field()
-  name(@Root() parent: User) {
+  name(@Root() parent: User): string {
     return `${parent.firstName} ${parent.lastName}`
   }
 

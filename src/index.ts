@@ -1,20 +1,21 @@
 import "reflect-metadata";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
-import { buildSchema, Query, Resolver } from "type-graphql";
+import { buildSchema, formatArgumentValidationError } from "type-graphql";
 import express from "express";
 import cors from "cors";
 import { AppDataSource } from "../data-source";
 import { RegisterResolver } from "./modules/user/Register";
 
-
 const bootstrap = async () => {
   const schema = await buildSchema({
     resolvers: [RegisterResolver],
+    validate: true,
   });
 
   const apolloServer = new ApolloServer({
     schema,
+    formatError: formatArgumentValidationError
   });
   await apolloServer.start();
 
@@ -39,4 +40,3 @@ AppDataSource.initialize()
   .catch((err) => {
     console.error("Error during Data Source initialization", err);
   });
-
