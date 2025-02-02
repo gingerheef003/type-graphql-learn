@@ -16,6 +16,7 @@ import { authChecker } from "./authChecker";
 import { ConfirmUserResolver } from "./modules/user/ConfirmUser";
 import { ForgotPasswordResolver } from "./modules/user/ForgotPassword";
 import { ChangePasswordResolver } from "./modules/user/ChangePassword";
+import { LogoutResolver } from "./modules/user/Logout";
 
 dotenv.config();
 if (!process.env.SESSION_SECRET) {
@@ -26,7 +27,7 @@ const SESSION_SECRET = process.env.SESSION_SECRET;
 
 const bootstrap = async () => {
   const schema = await buildSchema({
-    resolvers: [RegisterResolver, LoginResolver, MeResolver, ConfirmUserResolver, ForgotPasswordResolver, ChangePasswordResolver],
+    resolvers: [RegisterResolver, LoginResolver, MeResolver, ConfirmUserResolver, ForgotPasswordResolver, ChangePasswordResolver, LogoutResolver],
     validate: true,
     authChecker,
   });
@@ -68,7 +69,7 @@ const bootstrap = async () => {
     "/graphql",
     express.json(),
     expressMiddleware(apolloServer, {
-      context: async ({ req }: any) => ({ req }),
+      context: async ({ req, res }: any) => ({ req, res }),
     })
   );
 
