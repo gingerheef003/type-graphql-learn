@@ -1,22 +1,14 @@
 import "reflect-metadata";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
-import { buildSchema } from "type-graphql";
 import express from "express";
 import cors from "cors";
 import { AppDataSource } from "../data-source";
-import { RegisterResolver } from "./modules/user/Register";
 import session from "express-session";
-import connectRedis, { RedisStore } from "connect-redis";
+import { RedisStore } from "connect-redis";
 import dotenv from "dotenv";
 import { redis } from "./redis";
-import { LoginResolver } from "./modules/user/Login";
-import { MeResolver } from "./modules/user/Me";
-import { authChecker } from "./authChecker";
-import { ConfirmUserResolver } from "./modules/user/ConfirmUser";
-import { ForgotPasswordResolver } from "./modules/user/ForgotPassword";
-import { ChangePasswordResolver } from "./modules/user/ChangePassword";
-import { LogoutResolver } from "./modules/user/Logout";
+import { createSchema } from "./utils/createSchema";
 
 dotenv.config();
 if (!process.env.SESSION_SECRET) {
@@ -26,11 +18,7 @@ if (!process.env.SESSION_SECRET) {
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
 const bootstrap = async () => {
-  const schema = await buildSchema({
-    resolvers: [RegisterResolver, LoginResolver, MeResolver, ConfirmUserResolver, ForgotPasswordResolver, ChangePasswordResolver, LogoutResolver],
-    validate: true,
-    authChecker,
-  });
+  const schema = await createSchema();
 
   const apolloServer = new ApolloServer({
     schema,
