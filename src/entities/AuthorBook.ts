@@ -16,11 +16,11 @@ export class AuthorBook extends BaseEntity {
   @PrimaryColumn()
   bookId!: number;
 
-  @ManyToOne(() => Author, (author) => author.bookConnection)
+  @ManyToOne(() => Author, (author) => author.bookConnection, {onDelete: "CASCADE"})
   @JoinColumn({ name: "authorId" })
   author!: Promise<Author>;
 
-  @ManyToOne(() => Book, (book) => book.authorConnection)
+  @ManyToOne(() => Book, (book) => book.authorConnection, {onDelete: "CASCADE"})
   @JoinColumn({ name: "bookId" })
   book!: Promise<Book>;
 }
