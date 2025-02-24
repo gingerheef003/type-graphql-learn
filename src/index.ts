@@ -10,6 +10,8 @@ import dotenv from "dotenv";
 import { redis } from "./redis";
 import { createSchema } from "./utils/createSchema";
 import { fieldExtensionsEstimator, getComplexity, simpleEstimator } from "graphql-query-complexity";
+import { MyContext } from "./types/MyContext";
+import { createAuthorsLoader } from "./utils/authorsLoader";
 
 dotenv.config();
 if (!process.env.SESSION_SECRET) {
@@ -83,7 +85,7 @@ const bootstrap = async () => {
     "/graphql",
     express.json(),
     expressMiddleware(apolloServer, {
-      context: async ({ req, res }: any) => ({ req, res }),
+      context: async ({ req, res }: any) => ({ req, res, authorsLoader: createAuthorsLoader() }),
     })
   );
 

@@ -8,6 +8,7 @@ import { LogoutResolver } from "../modules/user/Logout";
 import { MeResolver } from "../modules/user/Me";
 import { RegisterResolver } from "../modules/user/Register";
 import { CreateProductResolver, CreateUserResolver } from "../modules/user/CreateUser";
+import { AuthorBookResolver } from "../modules/author-book/AuthorBookResolver";
 
 export const createSchema = () =>
   buildSchema({
@@ -20,7 +21,8 @@ export const createSchema = () =>
       ChangePasswordResolver,
       LogoutResolver,
       CreateUserResolver,
-      CreateProductResolver
+      CreateProductResolver,
+      AuthorBookResolver
     ],
     validate: true,
     authChecker,
